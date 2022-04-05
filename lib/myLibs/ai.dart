@@ -7,7 +7,7 @@ class AI {
         Game.player[0].helth <= 0) return;
     int mxPoint = -999;
 
-    Abilities move = Abilities.Skip;
+    Abilities move = Abilities.Attack;
 
     if (Game.player[1].mana >= CardTypes.attackMana) {
       List<fooPlayer> _foo = [
@@ -46,7 +46,7 @@ class AI {
 
       if (mx > mxPoint) {
         mxPoint = mx;
-        move = Abilities.Attack;
+        move = Abilities.Defence;
       }
     }
 
@@ -64,7 +64,7 @@ class AI {
 
       if (mx > mxPoint) {
         mxPoint = mx;
-        move = Abilities.Attack;
+        move = Abilities.Heal;
       }
     }
 
@@ -78,19 +78,16 @@ class AI {
       _foo[1].skip();
       var copy = _foo.map((item) => fooPlayer.clone(item)).toList();
       int mx = 0;
-      try {
-        mx = minimax(copy, false);
-      } catch (e) {
-        print("ESKIP");
-      }
+      mx = minimax(copy, false);
 
       if (mx > mxPoint) {
         mxPoint = mx;
-        move = Abilities.Attack;
+        move = Abilities.Skip;
       }
     }
 
     await Future.delayed(Duration(seconds: 1));
+    print(move.toString());
     switch (move) {
       case Abilities.Attack:
         Game.attack(1);
@@ -105,6 +102,7 @@ class AI {
         Game.skip(1);
         break;
     }
+    Game.skip(1);
   }
 
   ///MainAI
@@ -120,8 +118,6 @@ class AI {
             foo.map((item) => fooPlayer.clone(item)).toList();
         _foo[0].getDamage();
         _foo[1].attack();
-        print(foo[0].mana);
-        print(foo[1].mana);
         int mx = minimax(_foo, false);
 
         if (mx > bestScore) {
@@ -145,18 +141,6 @@ class AI {
         List<fooPlayer> _foo =
             foo.map((item) => fooPlayer.clone(item)).toList();
         _foo[1].heal();
-
-        int mx = minimax(_foo, false);
-
-        if (mx > bestScore) {
-          bestScore = mx;
-        }
-      }
-
-      if (foo[1].mana >= 0) {
-        List<fooPlayer> _foo =
-            foo.map((item) => fooPlayer.clone(item)).toList();
-        _foo[1].skip();
 
         int mx = minimax(_foo, false);
 
@@ -197,18 +181,6 @@ class AI {
         List<fooPlayer> _foo =
             foo.map((item) => fooPlayer.clone(item)).toList();
         _foo[0].heal();
-
-        int mx = minimax(_foo, true);
-
-        if (mx < bestScore) {
-          bestScore = mx;
-        }
-      }
-
-      if (foo[0].mana >= 0) {
-        List<fooPlayer> _foo =
-            foo.map((item) => fooPlayer.clone(item)).toList();
-        _foo[0].skip();
 
         int mx = minimax(_foo, true);
 

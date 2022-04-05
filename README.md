@@ -1,6 +1,7 @@
 # mydude_assignment
 
-A new Flutter project.
+I tried to implement AI but itmakes it so hard to think.
+In my game it uses healing and shileding and also gaining mana which makes infit amount of loop
 
 ## Getting Started
 
